@@ -2,8 +2,9 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from './assets/vite.svg'
 // import heroImg from './assets/hero.png'
-import './App.css'
-import { Component } from 'react'
+import "./App.css";
+import { Component } from "react";
+import user from "./user.json";
 // function App() {
 //   const [count, setCount] = useState(0)
 
@@ -120,12 +121,41 @@ import { Component } from 'react'
 // }
 
 class App extends Component {
+  state = {
+    users: user,
+  };
 
+  deleteUsers = (id) => {
+    this.setState((prev) => ({
+      users: prev.users.filter((user) => user.id !== id),
+    }));
+  };
   render() {
+    const { users } = this.state;
     return (
-      <h1>Hello World</h1>
-    )
+      <ul>
+        {users.map(({ id, name, category, inStock, price, rating, status }) => {
+          return (
+            <li key={id}>
+              <h2>{name}</h2>
+              <p>{category}</p>
+              <p>{price}</p>
+              <p>{rating}</p>
+              <p>{status}</p>
+              <p>{inStock ? "online" : "offline"}</p>
+              <button
+                onClick={() => {
+                  this.deleteUsers(id);
+                }}
+              >
+                Видалити
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    );
   }
 }
 
-export default App
+export default App;
